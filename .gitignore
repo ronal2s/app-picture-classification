@@ -2,6 +2,7 @@ node_modules/
 .expo/
 npm-debug.*
 *.jks
+*.history
 *.p8
 *.p12
 *.key
