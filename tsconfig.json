@@ -1,6 +1,21 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
+    "strict": true,
+    "jsx": "react",
+    "moduleResolution": "node", 
+    "useUnknownInCatchVariables": false,
+    "baseUrl": ".",/* Base directory to resolve non-absolute module names. */
+    "paths": {
+      "@assets/*": ["./assets/*"],   
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@models/*": ["src/models/*"],
+      "@services/*": ["src/services/*"],
+      "@types/*": ["src/types/*"],  
+      "@utils/*": ["src/utils/*"],   
+      "@views/*": ["src/views/*"], 
+    }, 
   }
 }
