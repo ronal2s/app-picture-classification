@@ -5,6 +5,7 @@
     "jsx": "react",
     "moduleResolution": "node", 
     "useUnknownInCatchVariables": false,
+    "esModuleInterop": true,
     "baseUrl": ".",/* Base directory to resolve non-absolute module names. */
     "paths": {
       "@assets/*": ["./assets/*"],   

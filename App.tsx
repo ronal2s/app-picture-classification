@@ -2,6 +2,11 @@ import {
   GlobalContextProvider,
   useGlobalContext,
 } from "@contexts/globalContext";
+import {
+  Provider as PaperProvider,
+  DefaultTheme as DefaultThemePaper,
+} from "react-native-paper";
+import { Theme } from "react-native-paper/lib/typescript/types";
 import AuthController from "@controllers/authController";
 import UserController from "@controllers/userController";
 import { User } from "@models/user";
@@ -9,6 +14,18 @@ import NavigationContent from "@views/navigation/navigation";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import colors from "@utils/colors/colors";
+
+const extendedTheme: Theme = {
+  ...DefaultThemePaper,
+  colors: {
+    ...DefaultThemePaper.colors,
+    primary: colors.primary,
+    disabled: "red",
+    // placeholder: colorScheme == "dark" ? "white" : colors.swatches.darkGrey,
+    // text: colorScheme == "dark" ? "white" : "black",
+  },
+};
 
 export default function App() {
   const globalContext = useGlobalContext();
@@ -39,8 +56,10 @@ export default function App() {
   };
 
   return (
-    <GlobalContextProvider>
-      <NavigationContent />
-    </GlobalContextProvider>
+    <PaperProvider theme={extendedTheme}>
+      <GlobalContextProvider>
+        <NavigationContent />
+      </GlobalContextProvider>
+    </PaperProvider>
   );
 }

@@ -7,10 +7,13 @@ export default class AuthController {
     return firebase?.auth();
   }
 
-  static async verifiedPhoneNumber(
-    phoneNumber: string,
-    recaptchaVerifier: any
-  ) {
+  static async verifiedPhoneNumber({
+    phoneNumber,
+    recaptchaVerifier,
+  }: {
+    phoneNumber: string;
+    recaptchaVerifier?: any;
+  }) {
     const phoneProvider = new firebase.auth.PhoneAuthProvider();
     return await phoneProvider.verifyPhoneNumber(
       phoneNumber,
