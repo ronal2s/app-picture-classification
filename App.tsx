@@ -2,26 +2,24 @@ import {
   GlobalContextProvider,
   useGlobalContext,
 } from "@contexts/globalContext";
-import {
-  Provider as PaperProvider,
-  DefaultTheme as DefaultThemePaper,
-} from "react-native-paper";
-import { Theme } from "react-native-paper/lib/typescript/types";
 import AuthController from "@controllers/authController";
 import UserController from "@controllers/userController";
 import { User } from "@models/user";
-import NavigationContent from "@views/navigation/navigation";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import colors from "@utils/colors/colors";
+import NavigationContent from "@views/navigation/navigation";
+import React, { useEffect } from "react";
+import {
+  DefaultTheme as DefaultThemePaper,
+  Provider as PaperProvider,
+} from "react-native-paper";
+import { Theme } from "react-native-paper/lib/typescript/types";
 
 const extendedTheme: Theme = {
   ...DefaultThemePaper,
   colors: {
     ...DefaultThemePaper.colors,
     primary: colors.primary,
-    disabled: "red",
+    // disabled: "red",
     // placeholder: colorScheme == "dark" ? "white" : colors.swatches.darkGrey,
     // text: colorScheme == "dark" ? "white" : "black",
   },
@@ -44,13 +42,13 @@ export default function App() {
         globalContext?.setContent({
           user: {
             ...globalContext.content.user,
-            data: userFirestore,
+            ...userFirestore,
           },
         });
       });
     } else {
       globalContext?.setContent({
-        user: { data: null },
+        user: null,
       });
     }
   };

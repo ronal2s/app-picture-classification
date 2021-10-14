@@ -1,7 +1,8 @@
+import { User } from "@models/user";
 import React, { createContext, useContext, useState } from "react";
 
 export type GlobalContextContentProps = {
-  user: any;
+  user: User | null;
 };
 
 export type GlobalContextProps = {
@@ -22,9 +23,7 @@ export function GlobalContextProvider({
 
   const [context, setContext] = useState<GlobalContextProps>({
     content: {
-      user: {
-        data: null,
-      },
+      user: null,
     },
     setContent: setContent,
   });
@@ -36,3 +35,4 @@ export function GlobalContextProvider({
   );
 }
 export const useGlobalContext = () => useContext(GlobalContext);
+export const useUser = () => useContext(GlobalContext)?.content.user;

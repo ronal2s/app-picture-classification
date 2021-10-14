@@ -1,4 +1,5 @@
 import "firebase/auth";
+import { Alert } from "react-native";
 import FirebaseController from "./firebaseController";
 const firebase = FirebaseController.app();
 
@@ -7,28 +8,38 @@ export default class AuthController {
     return firebase?.auth();
   }
 
-  static async verifiedPhoneNumber({
+  static async sendOTPCode({
     phoneNumber,
     recaptchaVerifier,
   }: {
     phoneNumber: string;
-    recaptchaVerifier?: any;
+    recaptchaVerifier: any;
   }) {
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    return await phoneProvider.verifyPhoneNumber(
-      phoneNumber,
-      // @ts-ignore
-      recaptchaVerifier.current
-    );
+    try {
+      const phoneProvider = new firebase.auth.PhoneAuthProvider();
+      const response = await phoneProvider.verifyPhoneNumber(
+        phoneNumber,
+        recaptchaVerifier.current
+      );
+      return response;
+    } catch (error) {
+      Alert.alert(error.message);
+      return null;
+    }
   }
 
   static async confirmOTP(verificationId: string, verificationCode: string) {
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-      verificationId,
-      verificationCode
-    );
-    const authResult = await firebase.auth().signInWithCredential(credential);
-    return authResult;
+    try {
+      const credential = firebase.auth.PhoneAuthProvider.credential(
+        verificationId,
+        verificationCode
+      );
+      const authResult = await firebase.auth().signInWithCredential(credential);
+      return authResult;
+    } catch (error) {
+      Alert.alert(error.message);
+      return null;
+    }
   }
 
   static async registerWithEmailAndPassword(email: string, password: string) {

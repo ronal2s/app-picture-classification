@@ -15,7 +15,7 @@ function NavigationContent() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName={Screens.SIGN_IN}>
+      <Stack.Navigator initialRouteName={Screens.LOADING}>
         {ALL_SCREENS.map((view, key) => {
           return (
             <Stack.Screen

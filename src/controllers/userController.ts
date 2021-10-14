@@ -13,7 +13,7 @@ export default class UserController {
     return snapshot.docs.map((doc) => doc.data()) as User[];
   }
 
-  static async addUser(user: User) {
+  static async create(user: User) {
     const firebaseController = FirebaseController.app();
     firebaseController
       ?.firestore()
@@ -22,7 +22,7 @@ export default class UserController {
       .set(user);
   }
 
-  static async updateUser(user: User): Promise<void> {
+  static async update(user: User): Promise<void> {
     const firebaseController = FirebaseController.app();
     try {
       return firebaseController

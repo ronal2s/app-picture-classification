@@ -11,4 +11,8 @@ export default class FirebaseController {
       return firebase.default;
     }
   }
+  static getTimestamp(): Object {
+    const firebaseController = FirebaseController.app();
+    return firebaseController.firestore.FieldValue.serverTimestamp();
+  }
 }
