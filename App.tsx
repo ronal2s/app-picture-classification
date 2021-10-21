@@ -1,13 +1,7 @@
-import {
-  GlobalContextProvider,
-  useGlobalContext,
-} from "@contexts/globalContext";
-import AuthController from "@controllers/authController";
-import UserController from "@controllers/userController";
-import { User } from "@models/user";
+import { GlobalContextProvider } from "@contexts/globalContext";
 import colors from "@utils/colors/colors";
 import NavigationContent from "@views/navigation/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   DefaultTheme as DefaultThemePaper,
   Provider as PaperProvider,
@@ -26,33 +20,6 @@ const extendedTheme: Theme = {
 };
 
 export default function App() {
-  const globalContext = useGlobalContext();
-
-  useEffect(() => {
-    const subscriber =
-      AuthController.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on un-mount
-  }, []);
-
-  const onAuthStateChanged = async (user: firebase.default.User | null) => {
-    if (user) {
-      UserController.getDoc(user.uid).onSnapshot((observer) => {
-        const userFirestore: User = observer.data() as User;
-        if (userFirestore) console.log("userId", userFirestore.id);
-        globalContext?.setContent({
-          user: {
-            ...globalContext.content.user,
-            ...userFirestore,
-          },
-        });
-      });
-    } else {
-      globalContext?.setContent({
-        user: null,
-      });
-    }
-  };
-
   return (
     <PaperProvider theme={extendedTheme}>
       <GlobalContextProvider>

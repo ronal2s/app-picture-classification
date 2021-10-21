@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 
 export type GlobalContextContentProps = {
   user: User | null;
+  loadingApp?: boolean;
 };
 
 export type GlobalContextProps = {
@@ -24,6 +25,7 @@ export function GlobalContextProvider({
   const [context, setContext] = useState<GlobalContextProps>({
     content: {
       user: null,
+      loadingApp: true,
     },
     setContent: setContent,
   });
