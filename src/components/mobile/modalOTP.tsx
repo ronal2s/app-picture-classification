@@ -63,7 +63,7 @@ function ModalVerifyOTP({
         }
 
         onSwipe();
-        navigation.replace(Screens.HOME);
+        navigation.replace(Screens.TABS_CONTAINER);
       }
       setIsLoading(false);
     } catch (error) {

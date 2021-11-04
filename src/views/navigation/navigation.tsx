@@ -4,6 +4,7 @@ import UserController from "@controllers/userController";
 import { User } from "@models/user";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import colors from "@utils/colors/colors";
 import Screens from "@utils/screens";
 import views from "@views/navigation/screens";
 import React, { useEffect } from "react";
@@ -47,7 +48,13 @@ function NavigationContent() {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Stack.Navigator initialRouteName={Screens.LOADING}>
+      <Stack.Navigator
+        initialRouteName={Screens.LOADING}
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.primary },
+          headerTintColor: colors.white,
+        }}
+      >
         {ALL_SCREENS.map((view, key) => {
           return (
             <Stack.Screen

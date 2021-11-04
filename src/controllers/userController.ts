@@ -15,11 +15,11 @@ export default class UserController {
 
   static async create(user: User) {
     const firebaseController = FirebaseController.app();
-    firebaseController
-      ?.firestore()
+    const ref = await firebaseController
+      .firestore()
       .collection(collections.users)
-      .doc(user.id)
-      .set(user);
+      .add(user);
+    return ref.update({ id: ref.id });
   }
 
   static async update(user: User): Promise<void> {

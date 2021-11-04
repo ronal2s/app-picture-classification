@@ -14,7 +14,7 @@ function LoadingView() {
   useEffect(() => {
     if (!globalContext?.content.loadingApp) {
       const isUserLogged = AuthController.isUserLogged();
-      const screen = isUserLogged ? Screens.HOME : Screens.SIGN_IN;
+      const screen = isUserLogged ? Screens.TABS_CONTAINER : Screens.SIGN_IN;
       navigation.replace(screen);
     }
   }, [globalContext?.content.loadingApp]);

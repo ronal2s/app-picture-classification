@@ -82,7 +82,7 @@ function SignInView() {
       <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
         ref={refCaptchaVerifier}
         firebaseConfig={firebaseConfig}
-        attemptInvisibleVerification={true}
+        // attemptInvisibleVerification={true}
       />
     </DimissKeyboardView>
   );
