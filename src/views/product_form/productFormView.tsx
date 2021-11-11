@@ -1,11 +1,13 @@
 import DimissKeyboardView from "@components/dimissKeyboardView";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
+import { StyledTextError } from "@components/styleds/styledTextError";
 import { StyledView } from "@components/styleds/styledView";
 import MyTextInput from "@components/textInput/textInput";
 import ProductController from "@controllers/productController";
 import { useRoute } from "@react-navigation/core";
 import constants from "@utils/constants";
 import SelectPictureView from "@views/product_form/components/selectPicture";
+import productHelper from "@views/product_form/productFormHelper";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { Button } from "react-native-paper";
@@ -19,6 +21,7 @@ function ProductFormView() {
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(capturedPicture);
+  const [errors, setErrors] = useState({ ...productHelper.requeridedFields });
   const [form, setForm] = useState({
     id: "",
     picture: image,
@@ -65,11 +68,15 @@ function ProductFormView() {
   };
 
   const onSave = async () => {
-    setLoading(true);
-    await ProductController.add({ product: { ...form, picture: image } });
-    clearForm();
-    setLoading(false);
-    Alert.alert("Produto guardado exitosamente");
+    const anyErrors = productHelper.validateErrors(form);
+    setErrors({ ...anyErrors });
+    if (anyErrors.canContinue) {
+      setLoading(true);
+      await ProductController.add({ product: { ...form, picture: image } });
+      clearForm();
+      setLoading(false);
+      Alert.alert("Produto guardado exitosamente");
+    }
   };
 
   return (
@@ -81,12 +88,17 @@ function ProductFormView() {
         onChangeClassification={onChangeClassification}
       />
       <StyledView padding={constants.padding} flex={1}>
+        {Boolean(errors.picture) && (
+          <StyledTextError>{errors.picture}</StyledTextError>
+        )}
         <MyTextInput
           name="name"
           value={form.name}
           label="Nombre"
+          error={errors.name}
           onChange={onChangeForm}
         />
+
         <MyTextInput
           name="brand"
           value={form.brand}
@@ -104,6 +116,7 @@ function ProductFormView() {
           value={form.price}
           label="Precio"
           keyboardType="numeric"
+          error={errors.price}
           onChange={onChangeForm}
         />
         <MyTextInput
@@ -111,6 +124,7 @@ function ProductFormView() {
           value={form.quantity}
           label="Cantidad"
           keyboardType="numeric"
+          error={errors.quantity}
           onChange={onChangeForm}
         />
         <StyledSpacer />
