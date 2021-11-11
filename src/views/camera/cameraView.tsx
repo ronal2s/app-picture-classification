@@ -1,7 +1,8 @@
 import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/core";
+import Product from "@models/product";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import colors from "@utils/colors/colors";
 import Screens from "@utils/screens";
@@ -19,26 +20,12 @@ function CameraView() {
   const [modal, setModal] = useState(false);
   const [picture, setPicture] = useState("");
 
-  // useEffect(() => {
-  //   navigation.addListener("beforeRemove", (e) => {
-  //     e.preventDefault();
-  //     console.log("picture: ", picture);
-  //     navigation.navigate(Screens.PRODUCT_FORM, {
-  //       classification: "",
-  //       picture,
-  //     });
-  //   });
-  // }, [navigation, picture]);
+  const route = useRoute();
+  const { existingItem } = route.params as {
+    existingItem?: Product;
+  };
 
   useEffect(() => {
-    // navigation.setOptions({
-    //   headerLeft: () => (
-    //     <TouchableOpacity style={{ marginLeft: 10 }}>
-    //       <StyledText color="white">Atrás</StyledText>
-    //     </TouchableOpacity>
-    //   ),
-    // });
-
     checkPermissions();
   }, []);
 
@@ -89,6 +76,7 @@ function CameraView() {
     navigation.navigate(Screens.PRODUCT_FORM, {
       classification,
       picture: storagedPicture,
+      existingItem,
     });
   };
 

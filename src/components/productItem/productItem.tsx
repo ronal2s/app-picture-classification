@@ -6,11 +6,24 @@ import colors from "@utils/colors/colors";
 import { capitalizeText } from "@utils/helpers";
 import React from "react";
 import { Image } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-function ProductItem({ product }: { product: Product }) {
+function ProductItem({
+  product,
+  onPress,
+}: {
+  product: Product;
+  onPress?: (product: Product) => void;
+}) {
   return (
     <StyledView>
-      <StyledView>
+      <TouchableOpacity
+        onPress={() => {
+          if (onPress) {
+            onPress(product);
+          }
+        }}
+      >
         <StyledView
           style={{
             shadowOffset: { width: 0, height: 5 },
@@ -32,7 +45,9 @@ function ProductItem({ product }: { product: Product }) {
             }}
           />
         </StyledView>
-        <StyledSpacer height={2} />
+      </TouchableOpacity>
+      <StyledSpacer height={2} />
+      <StyledView width={100}>
         <StyledText
           fontWeight="700"
           textAlign="center"

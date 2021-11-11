@@ -4,6 +4,7 @@ import { StyledTextError } from "@components/styleds/styledTextError";
 import { StyledView } from "@components/styleds/styledView";
 import MyTextInput from "@components/textInput/textInput";
 import ProductController from "@controllers/productController";
+import Product from "@models/product";
 import { useRoute } from "@react-navigation/core";
 import constants from "@utils/constants";
 import SelectPictureView from "@views/product_form/components/selectPicture";
@@ -14,9 +15,14 @@ import { Button } from "react-native-paper";
 
 function ProductFormView() {
   const route = useRoute();
-  const { classification, picture: capturedPicture } = route.params as {
+  const {
+    classification = undefined,
+    picture: capturedPicture = "",
+    existingItem,
+  } = route.params as {
     classification: string;
     picture: string;
+    existingItem?: Product;
   };
 
   const [loading, setLoading] = useState(false);
@@ -34,19 +40,37 @@ function ProductFormView() {
   });
 
   useEffect(() => {
+    if (existingItem) {
+      setForm({ ...(existingItem as any) });
+    }
+  }, [existingItem]);
+
+  useEffect(() => {
     setImage(capturedPicture);
   }, [capturedPicture]);
 
   useEffect(() => {
-    if (classification != undefined) onChangeClassification(classification);
+    if (classification != undefined) {
+      // if (classification == "" && !existingItem) {
+      onChangeClassification(classification);
+      // }
+    }
   }, [classification]);
 
   const onChangeClassification = (name: string) => {
-    setForm({ ...form, name });
+    if (name == "" && existingItem) {
+      setForm({ ...form, name: existingItem.name });
+    } else {
+      setForm({ ...form, name });
+    }
   };
 
   const onChangePicture = (picture: string) => {
-    setImage(picture);
+    if (picture == "" && existingItem) {
+      setImage(existingItem.picture);
+    } else {
+      setImage(picture);
+    }
   };
 
   const onChangeForm = (value: string, name: string) => {
@@ -79,10 +103,23 @@ function ProductFormView() {
     }
   };
 
+  const onEdit = async () => {
+    const anyErrors = productHelper.validateErrors({ ...form, picture: image });
+    setErrors({ ...anyErrors });
+    if (anyErrors.canContinue) {
+      setLoading(true);
+      await ProductController.update({ product: { ...form, picture: image } });
+      // clearForm();
+      setLoading(false);
+      Alert.alert("Produto editado exitosamente");
+    }
+  };
+
   return (
     <DimissKeyboardView scrollable>
       <SelectPictureView
         image={image}
+        existingItem={existingItem}
         setImage={onChangePicture}
         onChangePicture={onChangePicture}
         onChangeClassification={onChangeClassification}
@@ -128,9 +165,17 @@ function ProductFormView() {
           onChange={onChangeForm}
         />
         <StyledSpacer />
-        <Button loading={loading} mode="contained" onPress={onSave}>
-          Guardar
-        </Button>
+
+        {!existingItem && (
+          <Button loading={loading} mode="contained" onPress={onSave}>
+            Guardar
+          </Button>
+        )}
+        {existingItem && (
+          <Button loading={loading} mode="contained" onPress={onEdit}>
+            Editar
+          </Button>
+        )}
       </StyledView>
     </DimissKeyboardView>
   );

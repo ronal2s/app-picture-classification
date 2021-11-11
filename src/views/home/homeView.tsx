@@ -1,10 +1,7 @@
-import MyCard from "@components/card/card";
 import FabButton from "@components/fabButton";
 import ProductItem from "@components/productItem/productItem";
-import { StyledTitle } from "@components/styleds/styledTitle";
 import { StyledView } from "@components/styleds/styledView";
 import FirebaseController from "@controllers/firebaseController";
-import ProductController from "@controllers/productController";
 import Product from "@models/product";
 import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -12,7 +9,7 @@ import constants from "@utils/constants";
 import helpers from "@utils/helpers";
 import Screens from "@utils/screens";
 import React, { useEffect, useState } from "react";
-import { FlatList, Image } from "react-native";
+import { FlatList } from "react-native";
 
 // const data = require("./home.json");
 
@@ -45,36 +42,25 @@ function HomeView() {
     });
   };
 
+  const openProduct = (product: Product) => {
+    navigation.navigate(Screens.PRODUCT_FORM, {
+      picture: product.picture,
+      classification: undefined,
+      existingItem: product,
+    });
+  };
+
   return (
     <StyledView flex={1}>
-      {/* <FlatList
-        data={products}
-        showsVerticalScrollIndicator={false}
-        numColumns={3}
-        renderItem={({ item, index }) => (
-          <StyledView margin={2}>
-            <MyCard
-              width={WIDTH}
-              height={HEIGHT}
-              style={{ backfaceVisibility: "hidden" }}
-            >
-              <Image
-                source={{ uri: item.picture }}
-                style={{ width: 100, height: 100 }}
-              />
-              <StyledTitle textAlign="center">{item.name}</StyledTitle>
-            </MyCard>
-          </StyledView>
-        )}
-        keyExtractor={(item) => item.id}
-      /> */}
-      <StyledView padding={constants.padding}>
+      <StyledView padding={constants.padding} alignItems="center">
         <FlatList
           data={products}
           showsVerticalScrollIndicator={false}
           numColumns={3}
           renderItem={({ item, index }) => (
-            <ProductItem product={item} key={index} />
+            <StyledView margin={4}>
+              <ProductItem product={item} key={index} onPress={openProduct} />
+            </StyledView>
           )}
           keyExtractor={(item) => item.id}
         />

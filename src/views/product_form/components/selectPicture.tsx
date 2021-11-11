@@ -1,6 +1,7 @@
 import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+import Product from "@models/product";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import colors from "@utils/colors/colors";
@@ -17,11 +18,13 @@ function SelectPictureView({
   onChangePicture,
   image,
   setImage,
+  existingItem,
 }: {
   onChangeClassification: (classification: string) => void;
   onChangePicture: (pictureURL: string) => void;
   image: string;
   setImage: (pictureURL: string) => void;
+  existingItem: Product | undefined;
 }) {
   const route = useRoute();
   const navigation = useNavigation<StackNavigationProp<any>>();
@@ -78,7 +81,7 @@ function SelectPictureView({
 
   const onTakePicture = async () => {
     setPictureModal(false);
-    navigation.navigate(Screens.CAMERA);
+    navigation.navigate(Screens.CAMERA, { existingItem });
     // const result = await ImagePicker.launchCameraAsync({
     //   allowsEditing: true,
     //   aspect: [4, 3],
@@ -105,7 +108,7 @@ function SelectPictureView({
         setTimeout(() => {
           setImage(pictureUri);
           openClassificationModal();
-        }, 1000);
+        }, 500);
       }
     }
     // setPictureModal(false);
@@ -125,6 +128,17 @@ function SelectPictureView({
           style={{ flex: 1, width: "100%", height: "100%" }}
           onPress={openPictureModal}
         >
+          <StyledView
+            position="absolute"
+            width="100%"
+            height="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <StyledText fontWeight="500" color={colors.grey[600]}>
+              Cargando
+            </StyledText>
+          </StyledView>
           <Image
             source={{ uri: image }}
             style={{ width: "100%", height: "100%" }}

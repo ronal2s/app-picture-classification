@@ -17,6 +17,19 @@ class ProductController {
     return ref.update({ id: ref.id });
   }
 
+  static async update({ product }: { product: Product }) {
+    const firebaseController = FirebaseController.app();
+    const ref = await firebaseController
+      .firestore()
+      .collection(collections.products)
+      .doc(product.id)
+      .update({
+        ...product,
+        updatedAt: FirebaseController.getTimestamp(),
+      });
+    return ref;
+  }
+
   static async get() {
     const firebaseController = FirebaseController.app();
     const userId = AuthController.auth().currentUser?.uid;
