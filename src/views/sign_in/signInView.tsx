@@ -55,19 +55,26 @@ function SignInView() {
 
   return (
     <DimissKeyboardView>
-      <StyledView padding={constants.padding} flex={1} justifyContent="center">
-        <MyCard>
+      <StyledView
+        padding={constants.padding}
+        flex={1}
+        justifyContent="center"
+        backgroundColor={colors.primary}
+      >
+        <MyCard shadowColor="#0c6e5b">
           <StyledTitle
-            color={colors.primary}
+            // color={colors.primary}
+            color={colors.grey[700]}
             fontSize={42}
-            fontWeight="200"
+            fontWeight="400"
             textAlign="center"
           >
-            Iniciar Sesión
+            Iniciar sesión
           </StyledTitle>
           <StyledSpacer height={constants.margin * 2} />
           <MobileInput defaultValue={mobile} onChange={onChangeMobile} />
           <StyledSpacer />
+          {/* <Button mode="contained" onPress={sendOTPCode}> */}
           <Button mode="contained" onPress={sendOTPCode}>
             Iniciar sesión
           </Button>

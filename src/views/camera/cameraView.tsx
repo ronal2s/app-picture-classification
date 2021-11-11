@@ -54,7 +54,7 @@ function CameraView() {
   const capturePicture = async () => {
     if (hasPermission) {
       const photo = await (cameraRef.current as any).takePictureAsync({
-        quaity: 0.1,
+        quality: 0.1,
         base64: true,
       });
       setPicture(photo.uri);

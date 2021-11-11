@@ -21,7 +21,7 @@ function ProfileView() {
   const globalContext = useGlobalContext();
   const user = globalContext?.content.user;
   const [profilePicture, setProfilePicture] = useState(
-    user?.picture ?? picture
+    { uri: user?.picture } ?? picture
   );
   const [pictureModal, setPictureModal] = useState(false);
 
