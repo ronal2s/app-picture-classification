@@ -1,30 +1,89 @@
 import MyCard from "@components/card/card";
-import { StyledSpacer } from "@components/styleds/styledSpacer";
-import { StyledTitle } from "@components/styleds/styledTitle";
 import { StyledView } from "@components/styleds/styledView";
 import AuthController from "@controllers/authController";
 import { useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import helpers from "@utils/helpers";
 import Screens from "@utils/screens";
-import React from "react";
+import * as ImagePicker from "expo-image-picker";
+import SelectPictureModal from "@views/product_form/components/selectPictureModal";
+import React, { useState } from "react";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { Avatar, Button, List } from "react-native-paper";
+import StorageController from "@controllers/storageController";
+import { useGlobalContext } from "@contexts/globalContext";
+import UserController from "@controllers/userController";
 
-const picture =
-  "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png";
+const picture = require("@assets/placeholder.png");
 
 function ProfileView() {
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const globalContext = useGlobalContext();
+  const user = globalContext?.content.user;
+  const [profilePicture, setProfilePicture] = useState(
+    user?.picture ?? picture
+  );
+  const [pictureModal, setPictureModal] = useState(false);
 
   const signOut = async () => {
     AuthController.signOut();
     navigation.replace(Screens.SIGN_IN);
   };
 
+  const closePictureModal = () => {
+    setPictureModal(false);
+  };
+
+  const onSelectPicture = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera roll permissions to make this work");
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.1,
+      });
+      if (!result.cancelled) {
+        const pictureUri = result.uri;
+        setPictureModal(false);
+        setProfilePicture({ uri: pictureUri });
+        UserController.updateProfilePicture(pictureUri);
+      }
+    }
+  };
+
+  const onTakePicture = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Sorry, we need camera permissions to make this work");
+    } else {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.1,
+      });
+      if (!result.cancelled) {
+        const pictureUri = result.uri;
+        setPictureModal(false);
+        setProfilePicture({ uri: pictureUri });
+        UserController.updateProfilePicture(pictureUri);
+      }
+    }
+  };
+
+  const onRequestPicture = () => {
+    setPictureModal(true);
+  };
+
   return (
     <StyledView flex={1} justifyContent="center" alignItems="center">
       <MyCard width={helpers.screen.width / 1.2} centered>
-        <Avatar.Image size={100} source={{ uri: picture }} />
+        <TouchableOpacity onPress={onRequestPicture}>
+          <Avatar.Image size={100} source={profilePicture} />
+        </TouchableOpacity>
         <StyledView width="100%">
           <ProfileListItem
             title="Ver perfil"
@@ -46,6 +105,12 @@ function ProfileView() {
           Cerrar sesión
         </Button>
       </MyCard>
+      <SelectPictureModal
+        isVisible={pictureModal}
+        onClose={closePictureModal}
+        onSelectPicture={onSelectPicture}
+        onTakePicture={onTakePicture}
+      />
     </StyledView>
   );
 }

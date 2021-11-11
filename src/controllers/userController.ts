@@ -57,16 +57,23 @@ export default class UserController {
   }
 
   static async updateProfilePicture(
-    user: User,
+    // user: User,
     pictureUri: string,
     oldPictureUri?: string
   ) {
+    const userId = AuthController.auth().currentUser?.uid as string;
     let downloadedPicture = await StorageController.uploadFile(
       pictureUri,
-      user.id
+      userId
     );
-    user.picture = downloadedPicture;
-    await this.updateUser(user);
+    // user.picture = downloadedPicture;
+    FirebaseController.app()
+      .firestore()
+      .collection(collections.users)
+      .doc(userId)
+      .update({
+        picture: downloadedPicture,
+      });
     if (oldPictureUri) {
       StorageController.deleteFile(oldPictureUri);
     }
