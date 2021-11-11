@@ -88,17 +88,17 @@ function ProfileView() {
           <ProfileListItem
             title="Ver perfil"
             description="Información básica"
-            onPress={() => alert("hola")}
+            onPress={() => alert("En proceso...")}
           />
           <ProfileListItem
             title="Legal"
             description="Información legal"
-            onPress={() => alert("hola")}
+            onPress={() => alert("En proceso...")}
           />
           <ProfileListItem
             title="Privacidad"
             description="Información de privacidad"
-            onPress={() => alert("hola")}
+            onPress={() => alert("En proceso...")}
           />
         </StyledView>
         <Button mode="contained" onPress={signOut}>
