@@ -1,3 +1,4 @@
+import AuthController from "@controllers/authController";
 import FirebaseController from "@controllers/firebaseController";
 import StorageController from "@controllers/storageController";
 import { User } from "@models/user";
@@ -15,11 +16,14 @@ export default class UserController {
 
   static async create(user: User) {
     const firebaseController = FirebaseController.app();
+    const userId = AuthController.auth().currentUser?.uid;
     const ref = await firebaseController
       .firestore()
       .collection(collections.users)
-      .add(user);
-    return ref.update({ id: ref.id });
+      .doc(userId)
+      .set({ ...user, id: userId });
+    return ref;
+    // return ref.update({ id: ref.id });
   }
 
   static async update(user: User): Promise<void> {

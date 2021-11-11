@@ -9,7 +9,7 @@ const productHelper = {
     canContinue: false,
   },
   validateErrors: (form: Product) => {
-    const errors = { ...productHelper.requeridedFields };
+    const errors = { ...productHelper.requeridedFields, canContinue: true };
     if (!form.picture) {
       errors.picture = "Imagen es requerida";
       errors.canContinue = false;

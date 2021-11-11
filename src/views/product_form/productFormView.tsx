@@ -68,7 +68,7 @@ function ProductFormView() {
   };
 
   const onSave = async () => {
-    const anyErrors = productHelper.validateErrors(form);
+    const anyErrors = productHelper.validateErrors({ ...form, picture: image });
     setErrors({ ...anyErrors });
     if (anyErrors.canContinue) {
       setLoading(true);

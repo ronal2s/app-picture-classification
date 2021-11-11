@@ -24,7 +24,7 @@ function FabButton({ onPress }: { onPress: () => void }) {
           backgroundColor: colors.primary,
           shadowOffset: { width: 0, height: 5 },
           shadowRadius: 5,
-          shadowOpacity: 1,
+          shadowOpacity: 0.4,
           elevation: 5,
           shadowColor: colors.grey[900],
           justifyContent: "center",
