@@ -20,7 +20,7 @@ function HomeView() {
   const navigateToProductForm = () => {
     navigation.navigate(Screens.PRODUCT_FORM, {
       picture: "",
-      classification: "",
+      classification: undefined,
     });
   };
 

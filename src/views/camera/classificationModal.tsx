@@ -2,6 +2,10 @@ import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledText } from "@components/styleds/styledText";
 import { StyledTitle } from "@components/styleds/styledTitle";
 import { StyledView } from "@components/styleds/styledView";
+import { useGlobalContext } from "@contexts/globalContext";
+import ClassificationController from "@controllers/classificationController";
+import StorageController from "@controllers/storageController";
+import { User } from "@models/user";
 import colors from "@utils/colors/colors";
 import constants from "@utils/constants";
 import helpers from "@utils/helpers";
@@ -17,22 +21,31 @@ function ClassificationModal({
   picture,
 }: {
   isVisible: boolean;
-  onClose: () => void;
+  onClose: (storagedPicture: string, dontAddPicture?: boolean) => void;
   picture: string;
-  onAcceptResults: (classification: string) => void;
+  onAcceptResults: (classification: string, storagedPicture: string) => void;
 }) {
+  const globalContext = useGlobalContext();
+  const user = globalContext?.content.user as User;
   const [loading, setLoading] = useState(true);
   const [classification, setClassification] = useState("");
+  const [storagedPicture, setStoragedPicture] = useState("");
 
-  const onModalWillShow = () => {
-    setTimeout(() => {
-      setLoading(false);
-      setClassification("mesa");
-    }, 2000);
+  const onModalWillShow = async () => {
+    const pictureStorageURL = await StorageController.uploadFile(
+      picture,
+      user.id
+    );
+    setStoragedPicture(pictureStorageURL);
+    const response = await ClassificationController.request(pictureStorageURL);
+    setLoading(false);
+    setClassification(response.prediction);
   };
 
-  const sendResults = () => {
-    onAcceptResults(classification);
+  const sendResults = (sendClassification?: boolean) => {
+    setLoading(true);
+    setClassification("");
+    onAcceptResults(sendClassification ? classification : "", storagedPicture);
   };
 
   return (
@@ -40,8 +53,8 @@ function ClassificationModal({
       testID={"modal"}
       isVisible={isVisible}
       swipeDirection={["left", "right"]}
-      onSwipeComplete={onClose}
-      onBackdropPress={onClose}
+      onSwipeComplete={() => onClose(storagedPicture)}
+      onBackdropPress={() => onClose(storagedPicture)}
       onModalShow={onModalWillShow}
       style={{
         padding: 10,
@@ -80,7 +93,7 @@ function ClassificationModal({
               </StyledText>
             </StyledText>
             <StyledSpacer />
-            <Button onPress={sendResults} mode="contained">
+            <Button onPress={() => sendResults(true)} mode="contained">
               Aceptar clasificación
             </Button>
             <StyledSpacer height={2} />
@@ -91,8 +104,17 @@ function ClassificationModal({
             >
               Aceptar clasificación
             </Button> */}
-            <Button onPress={sendResults}>Solo tomar imagen</Button>
-            <Button color="red" onPress={onClose}>
+            <Button onPress={() => sendResults(false)}>
+              Solo tomar imagen
+            </Button>
+            <Button
+              color="red"
+              onPress={() => {
+                setLoading(true);
+                setClassification("");
+                onClose(storagedPicture, true);
+              }}
+            >
               Cancelar
             </Button>
           </StyledView>

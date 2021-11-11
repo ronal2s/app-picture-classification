@@ -70,8 +70,6 @@ function CameraView() {
         quaity: 0.1,
         base64: true,
       });
-
-      console.log(Object.keys(photo));
       setPicture(photo.uri);
       openModal();
     } else {
@@ -87,10 +85,10 @@ function CameraView() {
     );
   };
 
-  const onAcceptResults = (classification: string) => {
+  const onAcceptResults = (classification: string, storagedPicture: string) => {
     navigation.navigate(Screens.PRODUCT_FORM, {
       classification,
-      picture,
+      picture: storagedPicture,
     });
   };
 

@@ -1,42 +1,50 @@
-import * as ImagePicker from "expo-image-picker";
-
+import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
+import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import colors from "@utils/colors/colors";
 import helpers from "@utils/helpers";
-import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, TouchableOpacity } from "react-native";
-import SelectPictureModal from "@views/product_form/components/selectPictureModal";
-import { StyledText } from "@components/styleds/styledText";
-import { useNavigation, useRoute } from "@react-navigation/core";
 import Screens from "@utils/screens";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect } from "react";
 import ClassificationModal from "@views/camera/classificationModal";
+import SelectPictureModal from "@views/product_form/components/selectPictureModal";
+import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
+import { Image, TouchableOpacity } from "react-native";
 
 function SelectPictureView({
   onChangeClassification,
+  onChangePicture,
+  image,
+  setImage,
 }: {
   onChangeClassification: (classification: string) => void;
+  onChangePicture: (pictureURL: string) => void;
+  image: string;
+  setImage: (pictureURL: string) => void;
 }) {
   const route = useRoute();
   const navigation = useNavigation<StackNavigationProp<any>>();
   const [pictureModal, setPictureModal] = useState(false);
   const [classificationModal, setClassificationModal] = useState(false);
 
-  const { classification, picture: capturedPicture } = route.params as {
-    classification: string;
-    picture: string;
-  };
-  const [image, setImage] = useState(capturedPicture);
+  // const { classification, picture: capturedPicture } = route.params as {
+  //   classification: string;
+  //   picture: string;
+  // };
+  // const [image, setImage] = useState(capturedPicture);
 
-  useEffect(() => {
-    setImage(capturedPicture);
-  }, [capturedPicture]);
+  // useEffect(() => {
+  //   onChangePicture(capturedPicture);
+  // }, [capturedPicture]);
 
-  useEffect(() => {
-    onChangeClassification(classification);
-  }, [classification]);
+  // useEffect(() => {
+  //   setImage(capturedPicture);
+  // }, [capturedPicture]);
+
+  // useEffect(() => {
+  //   onChangeClassification(classification);
+  // }, [classification]);
 
   const closePictureModal = () => {
     setPictureModal(false);
@@ -46,7 +54,15 @@ function SelectPictureView({
     setPictureModal(true);
   };
 
-  const closeClassificationModal = () => {
+  const closeClassificationModal = (
+    storagedPicture: string,
+    dontAddPicture?: boolean
+  ) => {
+    if (!dontAddPicture) {
+      onChangePicture(storagedPicture);
+    } else {
+      onChangePicture("");
+    }
     setClassificationModal(false);
   };
 
@@ -54,9 +70,10 @@ function SelectPictureView({
     setClassificationModal(true);
   };
 
-  const onAcceptResults = (classification: string) => {
+  const onAcceptResults = (classification: string, storagedPicture: string) => {
     onChangeClassification(classification);
-    closeClassificationModal();
+    onChangePicture(storagedPicture);
+    closeClassificationModal(storagedPicture);
   };
 
   const onTakePicture = async () => {
