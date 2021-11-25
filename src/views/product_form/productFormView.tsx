@@ -1,8 +1,10 @@
 import DimissKeyboardView from "@components/dimissKeyboardView";
+import DropDown from "@components/dropdown";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledTextError } from "@components/styleds/styledTextError";
 import { StyledView } from "@components/styleds/styledView";
 import MyTextInput from "@components/textInput/textInput";
+import { useGlobalContext } from "@contexts/globalContext";
 import ProductController from "@controllers/productController";
 import Product from "@models/product";
 import { useRoute } from "@react-navigation/core";
@@ -13,8 +15,19 @@ import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { Button } from "react-native-paper";
 
+const options = [
+  { label: "Smartphone", value: "cellphone" },
+  { label: "Smartwatch", value: "digitalwatch" },
+  { label: "Headphone", value: "headphone" },
+  { label: "Laptop", value: "laptop" },
+  { label: "Speaker", value: "speaker" },
+  { label: "Tablet", value: "tablet" },
+  { label: "Television", value: "television" },
+];
+
 function ProductFormView() {
   const route = useRoute();
+  const globalContext = useGlobalContext();
   const {
     classification = undefined,
     picture: capturedPicture = "",
@@ -37,7 +50,15 @@ function ProductFormView() {
     quantity: "",
     receiptUrl: "",
     price: "",
+    classification,
   });
+
+  useEffect(() => {
+    setForm({
+      ...form,
+      classification: globalContext?.content.currentClassification,
+    });
+  }, [globalContext?.content.currentClassification]);
 
   useEffect(() => {
     if (existingItem) {
@@ -51,9 +72,7 @@ function ProductFormView() {
 
   useEffect(() => {
     if (classification != undefined) {
-      // if (classification == "" && !existingItem) {
       onChangeClassification(classification);
-      // }
     }
   }, [classification]);
 
@@ -87,6 +106,7 @@ function ProductFormView() {
       quantity: "",
       receiptUrl: "",
       price: "",
+      classification: "",
     });
     setImage("");
   };
@@ -128,12 +148,21 @@ function ProductFormView() {
         {Boolean(errors.picture) && (
           <StyledTextError>{errors.picture}</StyledTextError>
         )}
-        <MyTextInput
+        {/* <MyTextInput
           name="name"
           value={form.name}
           label="Nombre"
           error={errors.name}
           onChange={onChangeForm}
+        /> */}
+
+        <DropDown
+          label="Nombre"
+          value={form.name}
+          list={options}
+          onChange={(testing) => {
+            setForm({ ...form, name: testing });
+          }}
         />
 
         <MyTextInput

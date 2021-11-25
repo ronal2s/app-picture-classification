@@ -1,34 +1,35 @@
-import MyCard from "@components/card/card";
 import { StyledView } from "@components/styleds/styledView";
 import AuthController from "@controllers/authController";
-import { useNavigation } from "@react-navigation/core";
-import { StackNavigationProp } from "@react-navigation/stack";
-import helpers from "@utils/helpers";
-import Screens from "@utils/screens";
-import * as ImagePicker from "expo-image-picker";
 import SelectPictureModal from "@views/product_form/components/selectPictureModal";
-import React, { useState } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Avatar, Button, List } from "react-native-paper";
-import StorageController from "@controllers/storageController";
-import { useGlobalContext } from "@contexts/globalContext";
+import { TouchableOpacity } from "react-native";
 import UserController from "@controllers/userController";
+import * as ImagePicker from "expo-image-picker";
+import { useGlobalContext } from "@contexts/globalContext";
+import React, { useState } from "react";
+import { Avatar, Button } from "react-native-paper";
+import constants from "@utils/constants";
+import MyTextInput from "@components/textInput/textInput";
+import { StyledSpacer } from "@components/styleds/styledSpacer";
+import colors from "@utils/colors/colors";
+import { User } from "@models/user";
 
 const picture = require("@assets/placeholder.png");
 
-function ProfileView() {
-  const navigation = useNavigation<StackNavigationProp<any>>();
+function ProfileBasicInfoView() {
   const globalContext = useGlobalContext();
   const user = globalContext?.content.user;
   const [profilePicture, setProfilePicture] = useState(
     { uri: user?.picture } ?? picture
   );
+  const [form, setForm] = useState({
+    id: user?.id,
+    fullname: user?.fullname ?? "",
+    address: user?.address ?? "",
+    email: user?.email ?? "",
+    picture: profilePicture.uri,
+  });
   const [pictureModal, setPictureModal] = useState(false);
-
-  const signOut = async () => {
-    AuthController.signOut();
-    navigation.replace(Screens.SIGN_IN);
-  };
+  const [loading, setLoading] = useState(false);
 
   const closePictureModal = () => {
     setPictureModal(false);
@@ -78,37 +79,52 @@ function ProfileView() {
     setPictureModal(true);
   };
 
-  const openScreen = (name: Screens) => {
-    navigation.navigate(name);
+  const handleInputs = (value: string, name: string) => {
+    setForm({ ...form, [name]: value });
+  };
+
+  const onSave = async () => {
+    setLoading(true);
+    UserController.update(form as User);
+    setLoading(false);
   };
 
   return (
-    <StyledView flex={1} justifyContent="center" alignItems="center">
-      <MyCard width={helpers.screen.width / 1.2} centered>
-        <TouchableOpacity onPress={onRequestPicture}>
-          <Avatar.Image size={100} source={profilePicture} />
+    <StyledView padding={constants.padding}>
+      <StyledView alignItems="center">
+        <TouchableOpacity
+          onPress={onRequestPicture}
+          style={{
+            borderColor: colors.primary,
+            borderWidth: 2,
+            borderRadius: 100,
+          }}
+        >
+          <Avatar.Image size={200} source={profilePicture} />
         </TouchableOpacity>
-        <StyledView width="100%">
-          <ProfileListItem
-            title="Ver perfil"
-            description="Información básica"
-            onPress={() => openScreen(Screens.PROFILE_BASIC_INFO)}
-          />
-          <ProfileListItem
-            title="Legal"
-            description="Información legal"
-            onPress={() => alert("En proceso...")}
-          />
-          <ProfileListItem
-            title="Privacidad"
-            description="Información de privacidad"
-            onPress={() => alert("En proceso...")}
-          />
-        </StyledView>
-        <Button mode="contained" onPress={signOut}>
-          Cerrar sesión
-        </Button>
-      </MyCard>
+      </StyledView>
+      <MyTextInput
+        label="Nombre"
+        name="fullname"
+        value={form.fullname}
+        onChange={handleInputs}
+      />
+      <MyTextInput
+        label="Dirección"
+        name="address"
+        value={form.address}
+        onChange={handleInputs}
+      />
+      <MyTextInput
+        label="Correo electrónico"
+        name="email"
+        value={form.email}
+        onChange={handleInputs}
+      />
+      <StyledSpacer />
+      <Button loading={loading} mode="contained" onPress={onSave}>
+        Guardar{" "}
+      </Button>
       <SelectPictureModal
         isVisible={pictureModal}
         onClose={closePictureModal}
@@ -119,23 +135,4 @@ function ProfileView() {
   );
 }
 
-const ProfileListItem = ({
-  title,
-  description,
-  onPress,
-}: {
-  title: string;
-  description?: string;
-  onPress?: () => void;
-}) => {
-  return (
-    <List.Item
-      title={title}
-      description={description}
-      onPress={onPress}
-      right={(props) => <List.Icon {...props} icon="chevron-right" />}
-    />
-  );
-};
-
-export default ProfileView;
+export default ProfileBasicInfoView;

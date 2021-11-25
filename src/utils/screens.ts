@@ -5,6 +5,7 @@ enum Screens {
   TABS_CONTAINER = "Tabs Container",
   PRODUCT_FORM = "Formulario Producto",
   CAMERA = "Cámara",
+  PROFILE_BASIC_INFO = "Perfil - Información Básica",
 }
 
 export default Screens;

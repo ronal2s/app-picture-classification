@@ -6,6 +6,7 @@ import HomeView from "@views/home/homeView";
 import LoadingView from "@views/loading/loadingView";
 import TabsContainer from "@views/navigation/tabsContainer";
 import ProductFormView from "@views/product_form/productFormView";
+import ProfileBasicInfoView from "@views/profile/profileBasicInfo";
 import SignInView from "@views/sign_in/signInView";
 
 type ViewsProps = {
@@ -49,6 +50,10 @@ const views: ViewsProps[] = [
   {
     name: Screens.CAMERA,
     component: CameraView,
+  },
+  {
+    name: Screens.PROFILE_BASIC_INFO,
+    component: ProfileBasicInfoView,
   },
 ];
 

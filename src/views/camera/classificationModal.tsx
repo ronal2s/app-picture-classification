@@ -38,6 +38,12 @@ function ClassificationModal({
     );
     setStoragedPicture(pictureStorageURL);
     const response = await ClassificationController.request(pictureStorageURL);
+    if (globalContext) {
+      globalContext?.setContent({
+        ...globalContext.content,
+        currentClassification: response.prediction,
+      });
+    }
     setLoading(false);
     setClassification(response.prediction);
   };

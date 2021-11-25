@@ -3,12 +3,15 @@ import React, { createContext, useContext, useState } from "react";
 
 export type GlobalContextContentProps = {
   user: User | null;
+  currentClassification?: string;
   loadingApp?: boolean;
 };
 
 export type GlobalContextProps = {
   content: GlobalContextContentProps;
-  setContent: React.Dispatch<React.SetStateAction<GlobalContextContentProps>>;
+  setContent:
+    | React.Dispatch<React.SetStateAction<GlobalContextContentProps>>
+    | any;
 };
 
 export const GlobalContext = createContext<GlobalContextProps | null>(null);
