@@ -1,6 +1,7 @@
 import FabButton from "@components/fabButton";
 import ProductItem from "@components/productItem/productItem";
 import { StyledView } from "@components/styleds/styledView";
+import { useGlobalContext } from "@contexts/globalContext";
 import FirebaseController from "@controllers/firebaseController";
 import Product from "@models/product";
 import { useNavigation } from "@react-navigation/core";
@@ -18,6 +19,8 @@ const HEIGHT = helpers.screen.height / 6;
 
 function HomeView() {
   const navigation = useNavigation<StackNavigationProp<any>>();
+  const globalContext = useGlobalContext();
+  const user = globalContext?.content.user;
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -29,8 +32,10 @@ function HomeView() {
     firebaseController
       .firestore()
       .collection("products")
+      .where("userId", "==", user?.id)
       .onSnapshot((snapshot) => {
-        const products = snapshot.docs.map((doc) => doc.data());
+        let products = snapshot.docs.map((doc) => doc.data());
+        products = products.filter((product) => !product.archived);
         setProducts(products as any as Product[]);
       });
   };

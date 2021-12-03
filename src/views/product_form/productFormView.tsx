@@ -7,13 +7,15 @@ import MyTextInput from "@components/textInput/textInput";
 import { useGlobalContext } from "@contexts/globalContext";
 import ProductController from "@controllers/productController";
 import Product from "@models/product";
-import { useRoute } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
+import colors from "@utils/colors/colors";
 import constants from "@utils/constants";
 import SelectPictureView from "@views/product_form/components/selectPicture";
 import productHelper from "@views/product_form/productFormHelper";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import { Button } from "react-native-paper";
+import axios from "axios";
+import { ActivityIndicator, Button, IconButton } from "react-native-paper";
 
 const options = [
   { label: "Smartphone", value: "cellphone" },
@@ -26,6 +28,7 @@ const options = [
 ];
 
 function ProductFormView() {
+  const navigation = useNavigation();
   const route = useRoute();
   const globalContext = useGlobalContext();
   const {
@@ -41,6 +44,7 @@ function ProductFormView() {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(capturedPicture);
   const [errors, setErrors] = useState({ ...productHelper.requeridedFields });
+  const [loadingPrice, setLoadingPrice] = useState(false);
   const [form, setForm] = useState({
     id: "",
     picture: image,
@@ -135,6 +139,32 @@ function ProductFormView() {
     }
   };
 
+  const requestProductPrice = async () => {
+    setLoadingPrice(true);
+    setTimeout(() => setLoadingPrice(false), 1000);
+    const response = await fetch(
+      `https://invntryapp.herokuapp.com/requestProduct?name=${form.name}&brand=${form.brand}`
+    );
+    const data = await response.json();
+    setForm({ ...form, price: data.result.toFixed(2) });
+    setLoadingPrice(false);
+  };
+
+  const onArchive = () => {
+    Alert.alert("Advertencia", "¿Esta seguro de eliminar este producto?", [
+      {
+        text: "Aceptar",
+        onPress: () => {
+          ProductController.update({
+            product: { ...form, archived: true },
+          });
+          navigation.goBack();
+        },
+      },
+      { text: "Cancelar" },
+    ]);
+  };
+
   return (
     <DimissKeyboardView scrollable>
       <SelectPictureView
@@ -177,14 +207,26 @@ function ProductFormView() {
           label="Descripción"
           onChange={onChangeForm}
         />
-        <MyTextInput
-          name="price"
-          value={form.price}
-          label="Precio"
-          keyboardType="numeric"
-          error={errors.price}
-          onChange={onChangeForm}
-        />
+        <StyledView>
+          <MyTextInput
+            name="price"
+            value={form.price}
+            label="Precio"
+            keyboardType="numeric"
+            error={errors.price}
+            onChange={onChangeForm}
+          />
+          <StyledView position="absolute" right={10} top={10}>
+            {loadingPrice && <ActivityIndicator style={{ top: 10 }} />}
+            {!loadingPrice && (
+              <IconButton
+                icon="magnify"
+                color={colors.grey[500]}
+                onPress={requestProductPrice}
+              />
+            )}
+          </StyledView>
+        </StyledView>
         <MyTextInput
           name="quantity"
           value={form.quantity}
@@ -203,6 +245,12 @@ function ProductFormView() {
         {existingItem && (
           <Button loading={loading} mode="contained" onPress={onEdit}>
             Editar
+          </Button>
+        )}
+        <StyledSpacer height={2} />
+        {existingItem && (
+          <Button color={colors.red[500]} onPress={onArchive}>
+            Eliminar
           </Button>
         )}
       </StyledView>

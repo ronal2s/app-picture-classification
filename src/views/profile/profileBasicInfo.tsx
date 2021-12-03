@@ -12,6 +12,7 @@ import MyTextInput from "@components/textInput/textInput";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
 import colors from "@utils/colors/colors";
 import { User } from "@models/user";
+import CachedPicture from "@components/cachedPicture";
 
 const picture = require("@assets/placeholder.png");
 
@@ -100,7 +101,11 @@ function ProfileBasicInfoView() {
             borderRadius: 100,
           }}
         >
-          <Avatar.Image size={200} source={profilePicture} />
+          {/* <Avatar.Image size={200} source={profilePicture} /> */}
+          <CachedPicture
+            style={{ width: 200, height: 200, borderRadius: 100 }}
+            source={profilePicture}
+          />
         </TouchableOpacity>
       </StyledView>
       <MyTextInput

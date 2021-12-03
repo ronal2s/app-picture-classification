@@ -34,7 +34,8 @@
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.ronal2s.proyectoFinal"
     },
     "web": {
       "favicon": "./assets/favicon.png"

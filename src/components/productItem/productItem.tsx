@@ -1,3 +1,4 @@
+import CachedPicture from "@components/cachedPicture";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
@@ -36,7 +37,7 @@ function ProductItem({
           <StyledView position="absolute" top={50} left={25}>
             <StyledText color={colors.grey[500]}>Cargando</StyledText>
           </StyledView>
-          <Image
+          <CachedPicture
             source={{ uri: product.picture }}
             style={{
               borderRadius: 10,

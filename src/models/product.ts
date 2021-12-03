@@ -7,6 +7,7 @@ type Product = {
   description?: string;
   quantity: string;
   receiptUrl?: string;
+  archived?: boolean;
   price: string;
 };
 

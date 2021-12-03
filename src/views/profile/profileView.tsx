@@ -13,6 +13,7 @@ import { Avatar, Button, List } from "react-native-paper";
 import StorageController from "@controllers/storageController";
 import { useGlobalContext } from "@contexts/globalContext";
 import UserController from "@controllers/userController";
+import CachedPicture from "@components/cachedPicture";
 
 const picture = require("@assets/placeholder.png");
 
@@ -86,7 +87,11 @@ function ProfileView() {
     <StyledView flex={1} justifyContent="center" alignItems="center">
       <MyCard width={helpers.screen.width / 1.2} centered>
         <TouchableOpacity onPress={onRequestPicture}>
-          <Avatar.Image size={100} source={profilePicture} />
+          {/* <Avatar.Image size={100} source={profilePicture} /> */}
+          <CachedPicture
+            style={{ width: 100, height: 100, borderRadius: 50 }}
+            source={profilePicture}
+          />
         </TouchableOpacity>
         <StyledView width="100%">
           <ProfileListItem
