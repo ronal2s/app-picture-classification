@@ -12,9 +12,11 @@ import Product from "@models/product";
 import FirebaseController from "@controllers/firebaseController";
 import { useGlobalContext } from "@contexts/globalContext";
 import { User } from "@models/user";
+import { useNavigation } from "@react-navigation/core";
 
 function ReportsView() {
   const globalContext = useGlobalContext();
+  const navigation = useNavigation();
   const user = globalContext?.content.user as User;
   const [currentFormat, setCurrentFormat] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,14 +46,16 @@ function ReportsView() {
     setCurrentFormat("excel");
   };
 
-  const onGenerate = () => {
+  const onGenerate = async () => {
     setLoading(true);
     if (currentFormat === "pdf") {
-      exportPDF(products, user);
+      await exportPDF(products, user, navigation);
+      // setTimeout(() => setLoading(false), 20000);
     } else if (currentFormat === "excel") {
-      exportExcel(products);
+      await exportExcel(products);
+      // setTimeout(() => setLoading(false), 5000);
     }
-    setTimeout(() => setLoading(false), 1000);
+    setLoading(false);
   };
 
   return (

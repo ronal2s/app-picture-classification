@@ -5,6 +5,9 @@ import * as FileSystem from "expo-file-system";
 import XLSX from "xlsx";
 import { User } from "@models/user";
 import { capitalizeText } from "@utils/helpers";
+import { Alert } from "react-native";
+import Screens from "@utils/screens";
+import moment from "moment";
 
 export const exportExcel = async (data: Product[]) => {
   let _data: any = [];
@@ -46,7 +49,6 @@ export const exportExcel = async (data: Product[]) => {
   await FileSystem.writeAsStringAsync(uri, wbout, {
     encoding: FileSystem.EncodingType.Base64,
   });
-
   await Sharing.shareAsync(uri, {
     mimeType:
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -55,7 +57,11 @@ export const exportExcel = async (data: Product[]) => {
   });
 };
 
-export const exportPDF = async (data: Product[], user: User) => {
+export const exportPDF = async (
+  data: Product[],
+  user: User,
+  navigation: any
+) => {
   const _cardsText = `${data.map((item, key) => {
     // if (key == data.length - 1) console.log("Una vez");
     // if (key > 5 && key % 12 == 0) return;
@@ -133,7 +139,7 @@ export const exportPDF = async (data: Product[], user: User) => {
                     ${user.fullname}
                 </h3>
                 <h3 style="color: #333333;">
-                    ${new Date().toLocaleDateString("en")}
+                    ${moment().format("DD/MM/YYYY HH:MM:SS")}
                 </h3>
             </div>
         </div>
@@ -165,5 +171,24 @@ export const exportPDF = async (data: Product[], user: User) => {
     to: pdfName,
     // to: FileSystem.
   });
-  Sharing.shareAsync(pdfName);
+  Alert.alert("Reporte generado", "¿Desea descargar el reporte?", [
+    {
+      text: "Descargar",
+      onPress: async () => {
+        Sharing.shareAsync(pdfName);
+      },
+    },
+    {
+      text: "Ver",
+      onPress: () => {
+        navigation.navigate(Screens.DOCUMENT_VIEW, {
+          document: pdfName,
+          canShare: true,
+        });
+      },
+    },
+    {
+      text: "Cancelar",
+    },
+  ]);
 };
