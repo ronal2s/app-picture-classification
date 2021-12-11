@@ -10,6 +10,7 @@ import { saveKeyValue } from "@services/secureStorage";
 import colors from "@utils/colors/colors";
 import { firebaseConfig } from "@utils/config";
 import constants from "@utils/constants";
+import helpers from "@utils/helpers";
 import { SecureStorageKey } from "@utils/secureKeys";
 import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import React, { useRef, useState } from "react";
@@ -57,7 +58,8 @@ function SignInView() {
     <DimissKeyboardView>
       <StyledView
         padding={constants.padding}
-        flex={1}
+        // flex={1}
+        height={helpers.screen.height}
         justifyContent="center"
         backgroundColor={colors.primary}
       >

@@ -9,6 +9,7 @@ interface IMyTextInput {
   height?: number;
   autoFocus?: boolean;
   borderColor?: string;
+  backgroundColor?: string;
   borderWidth?: number;
   value?: string;
   secureTextEntry?: boolean;

@@ -29,6 +29,7 @@ function MobileInput({
         <MyTextInput
           label="_"
           name="areaCode"
+          backgroundColor="rgba(255,255,255,0.35)"
           value={mobile.areaCode}
           onChange={onChangeMobile}
           returnKeyType="next"
@@ -41,6 +42,7 @@ function MobileInput({
             label="Teléfono"
             name="number"
             value={mobile.number}
+            backgroundColor="rgba(255,255,255,0.35)"
             keyboardType="numeric"
             setRef={(ref) => (refInputNumber.current = ref)}
             onChange={onChangeMobile}

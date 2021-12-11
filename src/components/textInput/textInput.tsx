@@ -26,6 +26,7 @@ function MyTextInput({
   returnKeyType = "done",
   setRef,
   onSubmitEditing,
+  backgroundColor = colors.white,
 }: IMyTextInput) {
   return (
     <React.Fragment>
@@ -43,7 +44,7 @@ function MyTextInput({
           minHeight: height,
           borderColor,
           borderWidth,
-          backgroundColor: colors.white,
+          backgroundColor,
           // backgroundColor:
           //   mode == "outlined"
           //     ? colorScheme == "dark"

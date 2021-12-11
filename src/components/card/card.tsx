@@ -13,6 +13,7 @@ function MyCard({
   centered,
   style,
   shadowColor = colors.grey[400],
+  backgroundColor = colors.white,
 }: {
   children: any;
   padding?: number;
@@ -21,6 +22,7 @@ function MyCard({
   centered?: boolean;
   style?: StyleProp<ViewStyle>;
   shadowColor?: string;
+  backgroundColor?: string;
 }) {
   const centeredStyle = centered
     ? { justifyContent: "center", alignItems: "center" }
@@ -32,6 +34,7 @@ function MyCard({
         ...cardStyle.card,
         padding,
         shadowColor,
+        backgroundColor,
         // ...centeredStyle,
         ...(style as any),
       }}

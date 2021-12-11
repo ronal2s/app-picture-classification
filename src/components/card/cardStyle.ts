@@ -11,6 +11,7 @@ export default StyleSheet.create({
     shadowColor: colors.grey[400],
     padding: constants.padding,
     backgroundColor: "white",
+    // backgroundColor: "rgba(255,255,255,0.25)",
     borderRadius: constants.radius,
   },
 });

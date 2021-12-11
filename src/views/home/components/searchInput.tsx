@@ -16,7 +16,7 @@ function SearchInput({
   orderBy?: string;
   onChange: (text: string) => void;
   onClear: () => void;
-  onChangeOrderBy: (order: string) => void;
+  onChangeOrderBy?: (order: string) => void;
 }) {
   return (
     <StyledView width="100%" paddingHorizontal={30}>
