@@ -65,11 +65,19 @@ function HomeView() {
     });
   };
 
+  const onClearFilter = () => {
+    setFilterText("");
+  };
+
   return (
     <StyledView flex={1}>
       <DimissKeyboardView scrollable>
         <StyledView padding={constants.padding} alignItems="center">
-          <SearchInput onChange={setFilterText} />
+          <SearchInput
+            value={filterText}
+            onChange={setFilterText}
+            onClear={onClearFilter}
+          />
           <StyledSpacer />
           <FlatList
             data={filteredProducts}
