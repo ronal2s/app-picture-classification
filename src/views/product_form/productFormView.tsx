@@ -159,7 +159,7 @@ function ProductFormView() {
       });
       // clearForm();
       setLoading(false);
-      showToast({ message: "Produto editado exitosamente" });
+      showToast({ message: "Produto modificado exitosamente" });
     }
   };
 
@@ -283,7 +283,7 @@ function ProductFormView() {
         )}
         {existingItem && (
           <Button loading={loading} mode="contained" onPress={onEdit}>
-            Editar
+            Modificar
           </Button>
         )}
         <StyledSpacer height={2} />

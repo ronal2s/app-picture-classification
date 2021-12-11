@@ -22,6 +22,7 @@ function HomeView() {
   const [products, setProducts] = useState<Product[]>([]);
   // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [filterText, setFilterText] = useState("");
+  // const [orderBy, setOrderBy] = useState("desc");
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -43,6 +44,8 @@ function HomeView() {
       .firestore()
       .collection("products")
       .where("userId", "==", user?.id)
+      // .orderBy("createdAt", orderBy as any)
+      .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
         let products = snapshot.docs.map((doc) => doc.data());
         products = products.filter((product) => !product.archived);
@@ -77,6 +80,7 @@ function HomeView() {
             value={filterText}
             onChange={setFilterText}
             onClear={onClearFilter}
+            // onChangeOrderBy={setOrderBy}
           />
           <StyledSpacer />
           <FlatList

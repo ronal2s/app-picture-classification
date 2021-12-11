@@ -103,7 +103,7 @@ function SelectPictureView({
         allowsEditing: true,
         aspect: [4, 3],
         // quality: 0.1,
-        quality: 0,
+        quality: 0.2,
       });
       if (!result.cancelled) {
         // const compressedImage = await manipulateAsync(

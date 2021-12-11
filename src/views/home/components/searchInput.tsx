@@ -1,3 +1,4 @@
+import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
 import colors from "@utils/colors/colors";
 import React from "react";
@@ -8,13 +9,18 @@ function SearchInput({
   onChange,
   onClear,
   value,
+  orderBy = "asc",
+  onChangeOrderBy,
 }: {
   value?: string;
+  orderBy?: string;
   onChange: (text: string) => void;
   onClear: () => void;
+  onChangeOrderBy: (order: string) => void;
 }) {
   return (
     <StyledView width="100%" paddingHorizontal={30}>
+      {/* <StyledView zIndex={0} marginRight={40}> */}
       <StyledView zIndex={0}>
         <TextInput
           placeholder="Búsqueda"
@@ -49,6 +55,18 @@ function SearchInput({
           <IconButton icon="magnify" color={colors.grey[800]} />
         </StyledView>
       )}
+      {/* <StyledView position="absolute" right={20} zIndex={2}>
+        <IconButton
+          onPress={() => {
+            onChangeOrderBy(orderBy == "asc" ? "desc" : "asc");
+          }}
+          icon={orderBy == "desc" ? "arrow-up" : "arrow-down"}
+          color={colors.grey[800]}
+        />
+        <StyledText textAlign="center" style={{ top: -20 }}>
+          {orderBy}
+        </StyledText>
+      </StyledView> */}
     </StyledView>
   );
 }

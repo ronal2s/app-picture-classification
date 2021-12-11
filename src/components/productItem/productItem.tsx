@@ -55,6 +55,7 @@ function ProductItem({
           color={colors.grey[700]}
         >
           {capitalizeText(product.name)} {product.brand}
+          {/* {product.createdAt.toDate().toLocaleDateString()} */}
         </StyledText>
       </StyledView>
     </StyledView>

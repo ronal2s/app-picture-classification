@@ -1,3 +1,4 @@
+import CachedPicture from "@components/cachedPicture";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledText } from "@components/styleds/styledText";
 import { StyledTitle } from "@components/styleds/styledTitle";
@@ -80,6 +81,18 @@ function ClassificationModal({
         {/* <StyledText color={colors.grey[700]} textAlign="center">
           Estamos procesando su imagen
         </StyledText> */}
+        <StyledSpacer />
+        <CachedPicture
+          source={{ uri: picture }}
+          style={{
+            borderRadius: 10,
+            // width: 300,
+            width: "100%",
+            // flex: 1,
+            height: 150,
+            alignSelf: "center",
+          }}
+        />
         <StyledSpacer />
         {loading && <ActivityIndicator />}
         {classification != "" && (
