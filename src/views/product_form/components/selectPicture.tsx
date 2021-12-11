@@ -13,6 +13,7 @@ import SelectPictureModal from "@views/product_form/components/selectPictureModa
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 function SelectPictureView({
   onChangeClassification,
@@ -101,10 +102,20 @@ function SelectPictureView({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.1,
+        // quality: 0.1,
+        quality: 0,
       });
       if (!result.cancelled) {
+        // const compressedImage = await manipulateAsync(
+        //   result.uri,
+        //   [{ resize: { height: 800 } }],
+        //   {
+        //     compress: 0.5,
+        //     format: SaveFormat.JPEG,
+        //   }
+        // );
         const pictureUri = result.uri;
+        // const pictureUri = compressedImage.uri;
         setPictureModal(false);
         setTimeout(() => {
           setImage(pictureUri);

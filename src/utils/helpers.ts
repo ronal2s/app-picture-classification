@@ -1,3 +1,5 @@
+import { saveKeyValue } from "@services/secureStorage";
+import { SecureStorageKey } from "@utils/secureKeys";
 import { Dimensions, Platform } from "react-native";
 
 export function capitalizeText(value: string) {
@@ -11,6 +13,25 @@ export function hexToRgba(hex: string, opacity?: number): string {
   const b = parseInt(aux[2], 16);
   const result = `${r},${g},${b}`;
   return `rgba(${result}, ${opacity ? opacity : 1})`;
+}
+
+export async function saveCurrency(fromCurrency: string, toCurrency: string) {
+  var apiKey = "8cca08371218d5a4f4d1";
+
+  fromCurrency = encodeURIComponent(fromCurrency);
+  toCurrency = encodeURIComponent(toCurrency);
+  var query = fromCurrency + "_" + toCurrency;
+
+  var url =
+    "https://free.currconv.com/api/v7/convert?q=" +
+    query +
+    "&compact=ultra&apiKey=" +
+    apiKey;
+
+  let response: any = await fetch(url);
+  response = await response.json();
+
+  saveKeyValue(SecureStorageKey.currency, response.USD_DOP.toString());
 }
 
 export default {

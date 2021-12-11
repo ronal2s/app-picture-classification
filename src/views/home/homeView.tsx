@@ -25,7 +25,11 @@ function HomeView() {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      return product.name.toLowerCase().includes(filterText.toLowerCase());
+      return (
+        product.name.toLowerCase().includes(filterText.toLowerCase()) ||
+        product.brand?.toLowerCase().includes(filterText.toLowerCase()) ||
+        product.description?.toLowerCase().includes(filterText.toLowerCase())
+      );
     });
   }, [products, filterText]);
 

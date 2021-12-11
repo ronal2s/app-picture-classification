@@ -5,13 +5,16 @@ import { StyledTextError } from "@components/styleds/styledTextError";
 import { StyledView } from "@components/styleds/styledView";
 import MyTextInput from "@components/textInput/textInput";
 import { useGlobalContext } from "@contexts/globalContext";
+import showToast from "@contexts/useToast";
 import ProductController from "@controllers/productController";
 import StorageController from "@controllers/storageController";
 import Product from "@models/product";
 import { User } from "@models/user";
 import { useNavigation, useRoute } from "@react-navigation/core";
+import { getKeyValue } from "@services/secureStorage";
 import colors from "@utils/colors/colors";
 import constants from "@utils/constants";
+import { SecureStorageKey } from "@utils/secureKeys";
 import SelectFile from "@views/product_form/components/selectFile";
 import SelectPictureView from "@views/product_form/components/selectPicture";
 import productHelper from "@views/product_form/productFormHelper";
@@ -126,7 +129,7 @@ function ProductFormView() {
     setErrors({ ...anyErrors });
     if (anyErrors.canContinue) {
       setLoading(true);
-      const receiptUrl = file
+      const receiptUrl = file.uri
         ? await StorageController.uploadFile(file.uri, user.id)
         : form.receiptUrl;
       await ProductController.add({
@@ -134,7 +137,7 @@ function ProductFormView() {
       });
       clearForm();
       setLoading(false);
-      Alert.alert("Produto guardado exitosamente");
+      showToast({ message: "Produto guardado exitosamente" });
     }
   };
 
@@ -143,7 +146,7 @@ function ProductFormView() {
     setErrors({ ...anyErrors });
     if (anyErrors.canContinue) {
       setLoading(true);
-      const receiptUrl = file
+      const receiptUrl = file.uri
         ? await StorageController.uploadFile(file.uri, user.id)
         : form.receiptUrl;
       await ProductController.update({
@@ -156,7 +159,7 @@ function ProductFormView() {
       });
       // clearForm();
       setLoading(false);
-      Alert.alert("Produto editado exitosamente");
+      showToast({ message: "Produto editado exitosamente" });
     }
   };
 
@@ -164,10 +167,19 @@ function ProductFormView() {
     setLoadingPrice(true);
     setTimeout(() => setLoadingPrice(false), 1000);
     const response = await fetch(
-      `https://invntryapp.herokuapp.com/requestProduct?name=${form.name}&brand=${form.brand}`
+      // `https://invntryapp.herokuapp.com/requestProduct?name=${form.brand}&brand=${form.name}`
+      `https://invntryapp.herokuapp.com/requestProduct?name=${form.brand}`
     );
     const data = await response.json();
-    setForm({ ...form, price: data.result.toFixed(2) });
+    let usd_dop: any = await getKeyValue(SecureStorageKey.currency);
+    usd_dop = parseFloat(usd_dop).toFixed(2);
+    let cost_result = parseFloat(data.result);
+    console.log({
+      usd_dop,
+      cost_result,
+    });
+    const total = (cost_result * usd_dop).toFixed(2).toString();
+    setForm({ ...form, price: total });
     setLoadingPrice(false);
   };
 

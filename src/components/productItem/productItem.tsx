@@ -54,7 +54,7 @@ function ProductItem({
           textAlign="center"
           color={colors.grey[700]}
         >
-          {capitalizeText(product.name)}
+          {capitalizeText(product.name)} {product.brand}
         </StyledText>
       </StyledView>
     </StyledView>

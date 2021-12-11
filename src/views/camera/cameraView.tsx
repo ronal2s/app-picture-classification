@@ -9,6 +9,7 @@ import Screens from "@utils/screens";
 import CameraBottomBar from "@views/camera/cameraBottomBar";
 import ClassificationModal from "@views/camera/classificationModal";
 import { Camera } from "expo-camera";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 import React, { useEffect, useRef, useState } from "react";
 import { Image, TouchableOpacity } from "react-native";
 
@@ -51,13 +52,42 @@ function CameraView() {
     setPicture("");
   };
 
+  useEffect(() => {
+    testing();
+  }, [cameraRef.current]);
+
+  const testing = async () => {
+    // if (cameraRef.current) {
+    //   console.log("before");
+    //   const results = await cameraRef.current.getAvailablePictureSizesAsync();
+    //   console.log("after");
+    //   console.log({
+    //     results,
+    //     hola: "hola",
+    //   });
+    // }
+  };
+
   const capturePicture = async () => {
     if (hasPermission) {
       const photo = await (cameraRef.current as any).takePictureAsync({
-        quality: 0.1,
-        base64: true,
+        quality: 0,
+        scale: 0.1,
       });
-      setPicture(photo.uri);
+      const compressedImage = await manipulateAsync(
+        photo.uri,
+        [{ resize: { height: 800 } }],
+        {
+          compress: 0.5,
+          format: SaveFormat.JPEG,
+        }
+      );
+
+      // console.log({ compressedImage, photo });
+      // return;
+      // setPicture(compressedImage.base64);
+      // setPicture(photo.uri);
+      setPicture(compressedImage.uri);
       openModal();
     } else {
       requestPermission();
