@@ -28,6 +28,7 @@ function DimissKeyboardView(props: DismissKeyboardViewProps) {
           <ScrollView
             keyboardShouldPersistTaps="always"
             showsVerticalScrollIndicator={false}
+            onEnded={Keyboard.dismiss}
           >
             <StyledView>{props.children}</StyledView>
           </ScrollView>

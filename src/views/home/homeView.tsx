@@ -1,5 +1,7 @@
+import DimissKeyboardView from "@components/dimissKeyboardView";
 import FabButton from "@components/fabButton";
 import ProductItem from "@components/productItem/productItem";
+import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledView } from "@components/styleds/styledView";
 import { useGlobalContext } from "@contexts/globalContext";
 import FirebaseController from "@controllers/firebaseController";
@@ -9,19 +11,23 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import constants from "@utils/constants";
 import helpers from "@utils/helpers";
 import Screens from "@utils/screens";
-import React, { useEffect, useState } from "react";
+import SearchInput from "@views/home/components/searchInput";
+import React, { useEffect, useMemo, useState } from "react";
 import { FlatList } from "react-native";
-
-// const data = require("./home.json");
-
-const WIDTH = helpers.screen.width / 3 - 25;
-const HEIGHT = helpers.screen.height / 6;
 
 function HomeView() {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const globalContext = useGlobalContext();
   const user = globalContext?.content.user;
   const [products, setProducts] = useState<Product[]>([]);
+  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filterText, setFilterText] = useState("");
+
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      return product.name.toLowerCase().includes(filterText.toLowerCase());
+    });
+  }, [products, filterText]);
 
   useEffect(() => {
     fetchProducts();
@@ -57,19 +63,23 @@ function HomeView() {
 
   return (
     <StyledView flex={1}>
-      <StyledView padding={constants.padding} alignItems="center">
-        <FlatList
-          data={products}
-          showsVerticalScrollIndicator={false}
-          numColumns={3}
-          renderItem={({ item, index }) => (
-            <StyledView margin={4}>
-              <ProductItem product={item} key={index} onPress={openProduct} />
-            </StyledView>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </StyledView>
+      <DimissKeyboardView scrollable>
+        <StyledView padding={constants.padding} alignItems="center">
+          <SearchInput onChange={setFilterText} />
+          <StyledSpacer />
+          <FlatList
+            data={filteredProducts}
+            showsVerticalScrollIndicator={false}
+            numColumns={3}
+            renderItem={({ item, index }) => (
+              <StyledView margin={4}>
+                <ProductItem product={item} key={index} onPress={openProduct} />
+              </StyledView>
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </StyledView>
+      </DimissKeyboardView>
       <FabButton onPress={navigateToProductForm} />
     </StyledView>
   );
