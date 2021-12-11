@@ -6,15 +6,17 @@ import { StyledView } from "@components/styleds/styledView";
 import MyTextInput from "@components/textInput/textInput";
 import { useGlobalContext } from "@contexts/globalContext";
 import ProductController from "@controllers/productController";
+import StorageController from "@controllers/storageController";
 import Product from "@models/product";
+import { User } from "@models/user";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import colors from "@utils/colors/colors";
 import constants from "@utils/constants";
+import SelectFile from "@views/product_form/components/selectFile";
 import SelectPictureView from "@views/product_form/components/selectPicture";
 import productHelper from "@views/product_form/productFormHelper";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import axios from "axios";
 import { ActivityIndicator, Button, IconButton } from "react-native-paper";
 
 const options = [
@@ -31,6 +33,7 @@ function ProductFormView() {
   const navigation = useNavigation();
   const route = useRoute();
   const globalContext = useGlobalContext();
+  const user = globalContext?.content.user as User;
   const {
     classification = undefined,
     picture: capturedPicture = "",
@@ -45,6 +48,7 @@ function ProductFormView() {
   const [image, setImage] = useState(capturedPicture);
   const [errors, setErrors] = useState({ ...productHelper.requeridedFields });
   const [loadingPrice, setLoadingPrice] = useState(false);
+  const [file, setFile] = useState({ uri: "", name: "" });
   const [form, setForm] = useState({
     id: "",
     picture: image,
@@ -53,6 +57,7 @@ function ProductFormView() {
     description: "",
     quantity: "",
     receiptUrl: "",
+    receiptName: "",
     price: "",
     classification,
   });
@@ -109,6 +114,7 @@ function ProductFormView() {
       description: "",
       quantity: "",
       receiptUrl: "",
+      receiptName: "",
       price: "",
       classification: "",
     });
@@ -120,7 +126,12 @@ function ProductFormView() {
     setErrors({ ...anyErrors });
     if (anyErrors.canContinue) {
       setLoading(true);
-      await ProductController.add({ product: { ...form, picture: image } });
+      const receiptUrl = file
+        ? await StorageController.uploadFile(file.uri, user.id)
+        : form.receiptUrl;
+      await ProductController.add({
+        product: { ...form, picture: image, receiptUrl },
+      });
       clearForm();
       setLoading(false);
       Alert.alert("Produto guardado exitosamente");
@@ -132,7 +143,17 @@ function ProductFormView() {
     setErrors({ ...anyErrors });
     if (anyErrors.canContinue) {
       setLoading(true);
-      await ProductController.update({ product: { ...form, picture: image } });
+      const receiptUrl = file
+        ? await StorageController.uploadFile(file.uri, user.id)
+        : form.receiptUrl;
+      await ProductController.update({
+        product: {
+          ...form,
+          picture: image,
+          receiptUrl,
+          receiptName: file.name,
+        },
+      });
       // clearForm();
       setLoading(false);
       Alert.alert("Produto editado exitosamente");
@@ -234,6 +255,12 @@ function ProductFormView() {
           keyboardType="numeric"
           error={errors.quantity}
           onChange={onChangeForm}
+        />
+        <StyledSpacer />
+        <SelectFile
+          defaultFile={form.receiptUrl}
+          defaultName={form.receiptName}
+          onSelected={setFile}
         />
         <StyledSpacer />
 

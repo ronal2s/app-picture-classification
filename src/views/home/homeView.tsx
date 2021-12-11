@@ -25,7 +25,7 @@ function HomeView() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [user]);
 
   const fetchProducts = async () => {
     const firebaseController = FirebaseController.app();

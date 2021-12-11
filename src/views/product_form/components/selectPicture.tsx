@@ -1,3 +1,4 @@
+import CachedPicture from "@components/cachedPicture";
 import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
 import { MaterialCommunityIcons as Icon } from "@expo/vector-icons";
@@ -139,7 +140,8 @@ function SelectPictureView({
               Cargando
             </StyledText>
           </StyledView>
-          <Image
+
+          <CachedPicture
             source={{ uri: image }}
             style={{ width: "100%", height: "100%" }}
           />

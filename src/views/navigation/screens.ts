@@ -2,6 +2,7 @@ import { Route } from "@react-navigation/native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 import Screens from "@utils/screens";
 import CameraView from "@views/camera/cameraView";
+import DocumentView from "@views/document/documentView";
 import HomeView from "@views/home/homeView";
 import LoadingView from "@views/loading/loadingView";
 import TabsContainer from "@views/navigation/tabsContainer";
@@ -54,6 +55,10 @@ const views: ViewsProps[] = [
   {
     name: Screens.PROFILE_BASIC_INFO,
     component: ProfileBasicInfoView,
+  },
+  {
+    name: Screens.DOCUMENT_VIEW,
+    component: DocumentView,
   },
 ];
 

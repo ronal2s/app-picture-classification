@@ -2,8 +2,21 @@ import FirebaseController from "./firebaseController";
 
 class StorageController {
   static async getBlob(uri: string) {
-    const response = await fetch(uri);
-    const blob = await response.blob();
+    // const response = await fetch("file:/" + uri);
+    // const response = await fetch("file:/" + uri);
+    // const blob = await response.blob();
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response); // when BlobModule finishes reading, resolve with the blob
+      };
+      xhr.onerror = function () {
+        reject(new TypeError("Network request failed")); // error occurred, rejecting
+      };
+      xhr.responseType = "blob"; // use BlobModule's UriHandler
+      xhr.open("GET", uri, true); // fetch the blob from uri in async mode
+      xhr.send(null); // no initial data
+    });
     return blob;
   }
   static async uploadFile(
