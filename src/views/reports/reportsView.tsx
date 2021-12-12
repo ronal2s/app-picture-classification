@@ -32,8 +32,10 @@ function ReportsView() {
       .firestore()
       .collection("products")
       .where("userId", "==", user?.id)
+      .where("archived", "==", false)
       .onSnapshot((snapshot) => {
-        const products = snapshot.docs.map((doc) => doc.data());
+        let products = snapshot.docs.map((doc) => doc.data());
+        // products = products.filter((product) => !product.archived);
         setProducts(products as any as Product[]);
       });
   };

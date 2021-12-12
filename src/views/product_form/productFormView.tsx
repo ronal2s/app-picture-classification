@@ -133,7 +133,7 @@ function ProductFormView() {
         ? await StorageController.uploadFile(file.uri, user.id)
         : form.receiptUrl;
       await ProductController.add({
-        product: { ...form, picture: image, receiptUrl },
+        product: { ...form, picture: image, receiptUrl, archived: false },
       });
       clearForm();
       setLoading(false);

@@ -44,11 +44,11 @@ function HomeView() {
       .firestore()
       .collection("products")
       .where("userId", "==", user?.id)
+      .where("archived", "==", false)
       // .orderBy("createdAt", orderBy as any)
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
         let products = snapshot.docs.map((doc) => doc.data());
-        products = products.filter((product) => !product.archived);
         setProducts(products as any as Product[]);
       });
   };
