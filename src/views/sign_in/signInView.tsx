@@ -1,3 +1,4 @@
+import CachedPicture from "@components/cachedPicture";
 import MyCard from "@components/card/card";
 import DimissKeyboardView from "@components/dimissKeyboardView";
 import MobileInput from "@components/mobile/mobile";
@@ -14,8 +15,10 @@ import helpers from "@utils/helpers";
 import { SecureStorageKey } from "@utils/secureKeys";
 import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import React, { useRef, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Image } from "react-native";
 import { Button } from "react-native-paper";
+
+const logo = require("../../../assets/logo1.png");
 
 function SignInView() {
   const refCaptchaVerifier = useRef(null);
@@ -23,7 +26,7 @@ function SignInView() {
 
   const [mobile, setMobile] = React.useState({
     areaCode: "+1",
-    number: "8293733603",
+    number: "",
   });
   const fullPhoneNumber = mobile.areaCode + mobile.number;
 
@@ -64,7 +67,12 @@ function SignInView() {
         backgroundColor={colors.primary}
       >
         <MyCard shadowColor="#0c6e5b">
-          <StyledTitle
+          <Image
+            source={logo}
+            style={{ height: 100, alignSelf: "center" }}
+            resizeMode="contain"
+          />
+          {/* <StyledTitle
             // color={colors.primary}
             color={colors.grey[700]}
             fontSize={42}
@@ -72,12 +80,16 @@ function SignInView() {
             textAlign="center"
           >
             Iniciar sesión
-          </StyledTitle>
+          </StyledTitle> */}
           <StyledSpacer height={constants.margin * 2} />
           <MobileInput defaultValue={mobile} onChange={onChangeMobile} />
           <StyledSpacer />
           {/* <Button mode="contained" onPress={sendOTPCode}> */}
-          <Button mode="contained" onPress={sendOTPCode}>
+          <Button
+            mode="contained"
+            color={colors.secondary}
+            onPress={sendOTPCode}
+          >
             Iniciar sesión
           </Button>
           <StyledSpacer />

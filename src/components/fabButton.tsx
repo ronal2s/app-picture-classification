@@ -21,7 +21,7 @@ function FabButton({ onPress }: { onPress: () => void }) {
           width: SIZE,
           height: SIZE,
           borderRadius: SIZE / 2,
-          backgroundColor: colors.primary,
+          backgroundColor: colors.secondary,
           shadowOffset: { width: 0, height: 5 },
           shadowRadius: 5,
           shadowOpacity: 0.4,

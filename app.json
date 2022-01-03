@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "proyectoFinal",
-    "slug": "proyectoFinal",
+    "name": "InventoryApp",
+    "slug": "InventoryApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -40,9 +38,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-image-picker",
-      "expo-camera"
-    ]
+    "plugins": ["expo-image-picker", "expo-camera"]
   }
 }

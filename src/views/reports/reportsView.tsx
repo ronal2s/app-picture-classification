@@ -13,6 +13,7 @@ import FirebaseController from "@controllers/firebaseController";
 import { useGlobalContext } from "@contexts/globalContext";
 import { User } from "@models/user";
 import { useNavigation } from "@react-navigation/core";
+import showToast from "@contexts/useToast";
 
 function ReportsView() {
   const globalContext = useGlobalContext();
@@ -49,20 +50,27 @@ function ReportsView() {
   };
 
   const onGenerate = async () => {
-    setLoading(true);
-    if (currentFormat === "pdf") {
-      await exportPDF(products, user, navigation);
-      // setTimeout(() => setLoading(false), 20000);
-    } else if (currentFormat === "excel") {
-      await exportExcel(products);
-      // setTimeout(() => setLoading(false), 5000);
+    if (products.length) {
+      setLoading(true);
+      if (currentFormat === "pdf") {
+        await exportPDF(products, user, navigation);
+        // setTimeout(() => setLoading(false), 20000);
+      } else if (currentFormat === "excel") {
+        await exportExcel(products);
+        // setTimeout(() => setLoading(false), 5000);
+      }
+      setLoading(false);
+    } else {
+      showToast({
+        message: "No hay productos para exportar",
+        color: colors.error,
+      });
     }
-    setLoading(false);
   };
 
   return (
     <StyledView flex={1} justifyContent="center" alignItems="center">
-      <StyledTitle fontSize={24}>Seleccionar tipo de reporte</StyledTitle>
+      <StyledTitle fontSize={24}>Seleccionar tipo</StyledTitle>
       <StyledSpacer />
       <StyledView
         style={{
@@ -95,7 +103,12 @@ function ReportsView() {
       </StyledView>
       <StyledSpacer />
       {currentFormat != "" && (
-        <Button loading={loading} mode="contained" onPress={onGenerate}>
+        <Button
+          loading={loading}
+          color={colors.secondary}
+          mode="contained"
+          onPress={onGenerate}
+        >
           Generar reporte
         </Button>
       )}

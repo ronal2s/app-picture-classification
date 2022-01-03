@@ -27,7 +27,7 @@ function MobileInput({
         alignItems="center"
       >
         <MyTextInput
-          label="_"
+          label=" "
           name="areaCode"
           backgroundColor="rgba(255,255,255,0.35)"
           value={mobile.areaCode}

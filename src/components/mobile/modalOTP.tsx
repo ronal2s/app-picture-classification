@@ -93,7 +93,12 @@ function ModalVerifyOTP({
           onChange={(value) => setVerificationCode(value)}
         />
         <StyledSpacer />
-        <Button loading={isLoading} mode="contained" onPress={verifyCode}>
+        <Button
+          loading={isLoading}
+          color={colors.secondary}
+          mode="contained"
+          onPress={verifyCode}
+        >
           Verificar
         </Button>
         <Button onPress={resendOTP}>Reenviar código</Button>

@@ -4,8 +4,10 @@ import greenShades from "@utils/colors/greenShades";
 import redShades from "@utils/colors/redShades";
 
 export default {
-  primary: "#16a085",
+  primary: "#115a5a",
+  secondary: "#f4b414",
   white: "#fff",
+  error: redShades[500],
   grey: grayShades,
   red: redShades,
   blue: blueShades,

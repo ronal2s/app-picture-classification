@@ -20,7 +20,7 @@ function ProfileBasicInfoView() {
   const globalContext = useGlobalContext();
   const user = globalContext?.content.user;
   const [profilePicture, setProfilePicture] = useState(
-    { uri: user?.picture } ?? picture
+    user?.picture ? { uri: user?.picture } : picture
   );
   const [form, setForm] = useState({
     id: user?.id,
@@ -127,7 +127,12 @@ function ProfileBasicInfoView() {
         onChange={handleInputs}
       />
       <StyledSpacer />
-      <Button loading={loading} mode="contained" onPress={onSave}>
+      <Button
+        loading={loading}
+        color={colors.secondary}
+        mode="contained"
+        onPress={onSave}
+      >
         Guardar{" "}
       </Button>
       <SelectPictureModal

@@ -277,13 +277,23 @@ function ProductFormView() {
         <StyledSpacer />
 
         {!existingItem && (
-          <Button loading={loading} mode="contained" onPress={onSave}>
+          <Button
+            loading={loading}
+            color={colors.secondary}
+            mode="contained"
+            onPress={onSave}
+          >
             Guardar
           </Button>
         )}
         {existingItem && (
-          <Button loading={loading} mode="contained" onPress={onEdit}>
-            Modificar
+          <Button
+            loading={loading}
+            color={colors.secondary}
+            mode="contained"
+            onPress={onEdit}
+          >
+            Guardar
           </Button>
         )}
         <StyledSpacer height={2} />

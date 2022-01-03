@@ -72,7 +72,7 @@ function ClassificationModal({
           backgroundColor: "white",
           borderRadius: constants.radius * 2,
           padding: constants.padding * 2,
-          maxHeight: helpers.screen.height / 1.5,
+          // maxHeight: helpers.screen.height / 1.5,
         }}
       >
         <StyledTitle fontWeight="bold" fontSize={20} textAlign="center">
@@ -112,7 +112,11 @@ function ClassificationModal({
               </StyledText>
             </StyledText>
             <StyledSpacer />
-            <Button onPress={() => sendResults(true)} mode="contained">
+            <Button
+              color={colors.secondary}
+              onPress={() => sendResults(true)}
+              mode="contained"
+            >
               Aceptar clasificación
             </Button>
             <StyledSpacer height={2} />

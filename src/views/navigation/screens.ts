@@ -41,7 +41,7 @@ const views: ViewsProps[] = [
     name: Screens.TABS_CONTAINER,
     component: TabsContainer,
     options: {
-      title: "Proyecto Final",
+      title: "Inventory App",
     },
   },
   {

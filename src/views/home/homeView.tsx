@@ -2,6 +2,7 @@ import DimissKeyboardView from "@components/dimissKeyboardView";
 import FabButton from "@components/fabButton";
 import ProductItem from "@components/productItem/productItem";
 import { StyledSpacer } from "@components/styleds/styledSpacer";
+import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
 import { useGlobalContext } from "@contexts/globalContext";
 import FirebaseController from "@controllers/firebaseController";
@@ -83,6 +84,9 @@ function HomeView() {
             // onChangeOrderBy={setOrderBy}
           />
           <StyledSpacer />
+          {!filteredProducts.length && (
+            <StyledText>No hay productos</StyledText>
+          )}
           <FlatList
             data={filteredProducts}
             showsVerticalScrollIndicator={false}

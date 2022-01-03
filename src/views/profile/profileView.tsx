@@ -22,10 +22,9 @@ function ProfileView() {
   const globalContext = useGlobalContext();
   const user = globalContext?.content.user;
   const [profilePicture, setProfilePicture] = useState(
-    { uri: user?.picture } ?? picture
+    user?.picture ? { uri: user?.picture } : picture
   );
   const [pictureModal, setPictureModal] = useState(false);
-
   const signOut = async () => {
     AuthController.signOut();
     navigation.replace(Screens.SIGN_IN);
