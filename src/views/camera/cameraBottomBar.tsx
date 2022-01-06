@@ -38,9 +38,9 @@ function CameraBottomBar({
       >
         <Icon name="camera" size={42} color={colors.primary} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={flipCamera} style={cameraViewStyle.flipButton}>
+      {/* <TouchableOpacity onPress={flipCamera} style={cameraViewStyle.flipButton}>
         <Icon name="reload" size={42} color={colors.white} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </StyledView>
   );
 }
