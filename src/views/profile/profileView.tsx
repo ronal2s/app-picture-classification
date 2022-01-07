@@ -14,6 +14,7 @@ import StorageController from "@controllers/storageController";
 import { useGlobalContext } from "@contexts/globalContext";
 import UserController from "@controllers/userController";
 import CachedPicture from "@components/cachedPicture";
+import { StyledText } from "@components/styleds/styledText";
 
 const picture = require("@assets/placeholder.png");
 
@@ -91,6 +92,7 @@ function ProfileView() {
             style={{ width: 100, height: 100, borderRadius: 50 }}
             source={profilePicture}
           />
+          {/* <StyledText textAlign="center" >{user?.fullname}</StyledText> */}
         </TouchableOpacity>
         <StyledView width="100%">
           <ProfileListItem
@@ -98,7 +100,7 @@ function ProfileView() {
             description="Información básica"
             onPress={() => openScreen(Screens.PROFILE_BASIC_INFO)}
           />
-          <ProfileListItem
+          {/* <ProfileListItem
             title="Legal"
             description="Información legal"
             onPress={() => alert("En proceso...")}
@@ -107,7 +109,7 @@ function ProfileView() {
             title="Privacidad"
             description="Información de privacidad"
             onPress={() => alert("En proceso...")}
-          />
+          /> */}
         </StyledView>
         <Button mode="contained" onPress={signOut}>
           Cerrar sesión
