@@ -83,6 +83,10 @@ function ProfileView() {
     navigation.navigate(name);
   };
 
+  const openPrivacyInfo = () => {
+    navigation.navigate(Screens.DOCUMENT_VIEW, { document: "https://www.freeprivacypolicy.com/live/eeed969f-684c-44c7-872c-d19ee8e2431e" });
+  }
+
   return (
     <StyledView flex={1} justifyContent="center" alignItems="center">
       <MyCard width={helpers.screen.width / 1.2} centered>
@@ -100,16 +104,16 @@ function ProfileView() {
             description="Información básica"
             onPress={() => openScreen(Screens.PROFILE_BASIC_INFO)}
           />
-          {/* <ProfileListItem
+          <ProfileListItem
             title="Legal"
             description="Información legal"
-            onPress={() => alert("En proceso...")}
+            onPress={openPrivacyInfo}
           />
           <ProfileListItem
             title="Privacidad"
             description="Información de privacidad"
-            onPress={() => alert("En proceso...")}
-          /> */}
+            onPress={openPrivacyInfo}
+          />
         </StyledView>
         <Button mode="contained" onPress={signOut}>
           Cerrar sesión
