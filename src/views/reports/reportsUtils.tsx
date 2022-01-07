@@ -129,7 +129,7 @@ export const exportPDF = async (
         <div classname="Header" style="position: relative;background-color: white; width: 100%;height: 100px;">
             <div style="left: 39px;position: absolute;">
                 <img style="width: 200px; height: 100px; object-fit: contain;"
-                    src="https://www.qbrobotics.com/wp-content/uploads/2018/03/sample-logo-470x235.png">
+                    src="https://firebasestorage.googleapis.com/v0/b/proyectofinal-aaf1b.appspot.com/o/logo1.png?alt=media&token=e4d4573a-0b1c-4df2-81f6-e177cf0c84d2">
             </div>
             <div style="position: absolute; right: 10px; text-align: right; ">
                 <h3 style="color: #333333;">
