@@ -144,13 +144,13 @@ export const exportPDF = async (
             </div>
         </div>
     </div>
-    <div style="width: 100%; height: 15px; background-color: #16a085; margin-top: 35px;"></div>
-
+    <div style="width: 100%; height: 15px; background-color: #115a5a; margin-top: 35px;"></div>
+    
         ${_cardsText.replace(/,|undefined|false/g, "")}
         
 
 
-        <div style="width: 100%; height: 15px; background-color: #16a085; margin-top: 35px;"></div>
+        <div style="width: 100%; height: 15px; background-color: #115a5a; margin-top: 35px;"></div>
         </body>
         </html>
         `;
