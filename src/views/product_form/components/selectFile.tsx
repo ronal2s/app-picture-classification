@@ -1,14 +1,14 @@
 import { StyledSpacer } from "@components/styleds/styledSpacer";
 import { StyledText } from "@components/styleds/styledText";
 import { StyledView } from "@components/styleds/styledView";
+import { useNavigation } from "@react-navigation/core";
 import colors from "@utils/colors/colors";
 import helpers from "@utils/helpers";
+import Screens from "@utils/screens";
+import * as DocumentPicker from "expo-document-picker";
 import React, { useEffect } from "react";
 import { Alert, TouchableOpacity } from "react-native";
 import { IconButton } from "react-native-paper";
-import * as DocumentPicker from "expo-document-picker";
-import { useNavigation } from "@react-navigation/core";
-import Screens from "@utils/screens";
 
 function SelectFile({
   onSelected,
@@ -80,7 +80,7 @@ function SelectFile({
         borderColor={colors.grey[400]}
         borderRadius={10}
         borderWidth={1}
-        height={helpers.screen.height * 0.23}
+        // height={helpers.screen.height * 0.23}
       >
         <StyledView>
           <StyledSpacer />
@@ -93,7 +93,7 @@ function SelectFile({
             {file ? "Modificar documento" : "Seleccionar documento"}
           </StyledText>
         </StyledView>
-        <StyledView position="relative" alignSelf="center" top={-40}>
+        <StyledView alignSelf="center" >
           <TouchableOpacity onPress={() => onSelectFile(true)}>
             <IconButton
               icon="file"
@@ -102,7 +102,7 @@ function SelectFile({
             />
           </TouchableOpacity>
         </StyledView>
-        <StyledView position="relative" alignSelf="center" top={-80}>
+        <StyledView  alignSelf="center" >
           <StyledText
             fontSize={16}
             textAlign="center"
@@ -112,6 +112,7 @@ function SelectFile({
             {fileName ? fileName : "No se ha seleccionado ningún archivo"}
           </StyledText>
         </StyledView>
+        <StyledSpacer/>
       </StyledView>
     </StyledView>
   );

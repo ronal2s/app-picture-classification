@@ -27,8 +27,8 @@ const options = [
   { label: "Smartwatch", value: "digitalwatch" },
   { label: "Headphone", value: "headphone" },
   { label: "Laptop", value: "laptop" },
-  { label: "Speaker", value: "speaker" },
-  { label: "Tablet", value: "tablet" },
+  // { label: "Speaker", value: "speaker" },
+  // { label: "Tablet", value: "tablet" },
   { label: "Television", value: "television" },
 ];
 
